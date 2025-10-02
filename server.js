@@ -33,10 +33,10 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/footer', require('./routes/footer'));
-app.use('/api/contact', require('./routes/contact'));
-app.use('/api/partner', require('./routes/partner'));
-app.use('/api/product', require('./routes/product'));
+app.use('/api/footer', require('./api/footer'));
+app.use('/api/contact', require('./api/contact'));
+app.use('/api/partner', require('./api/partner'));
+app.use('/api/product', require('./api/product'));
 
 // Health check route
 app.get('/api/health', (req, res) => {
@@ -86,7 +86,9 @@ const startServer = (port) => {
 };
 
 // Start with port from .env or 5000, will auto-increment if busy
-const PORT = process.env.PORT || 5000;
-startServer(PORT);
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true
+}));
 
 module.exports = app;
