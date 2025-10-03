@@ -15,9 +15,11 @@ const app = express();
 // Security middleware
 app.use(helmet());
 
-// CORS configuration
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'https://modernenterprisessolutions.vercel.app',
+  origin: [
+    process.env.FRONTEND_URL || 'https://modernenterprisessolutions.vercel.app',
+    'https://modern-sol.com'
+  ],
   credentials: true
 }));
 
