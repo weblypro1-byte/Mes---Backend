@@ -15,13 +15,30 @@ const app = express();
 // Security middleware
 app.use(helmet());
 
+// app.use(cors({
+//   origin: [
+//     process.env.FRONTEND_URL || 'https://modernenterprisessolutions.vercel.app',
+//     'https://modern-sol.com'
+//   ],
+//   credentials: true
+// }));
+
+
+//
+
+const allowedOrigins = (process.env.FRONTEND_URL || '').split(',');
+
 app.use(cors({
-  origin: [
-    process.env.FRONTEND_URL || 'https://modernenterprisessolutions.vercel.app',
-    'https://modern-sol.com'
-  ],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
+
 
 // Rate limiting
 const limiter = rateLimit({
